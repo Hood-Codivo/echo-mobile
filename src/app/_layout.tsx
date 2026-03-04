@@ -25,7 +25,6 @@ export default function RootLayout() {
           <Stack.Screen name="connect-wallet" />
           <Stack.Screen name="device-verification" />
           <Stack.Screen name="dashboard" />
-          <Stack.Screen name="nfc-handshake" options={{ presentation: 'modal' }} />
           <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
           <Stack.Screen name="x-banner-update" />
         </Stack>

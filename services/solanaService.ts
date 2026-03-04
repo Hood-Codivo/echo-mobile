@@ -9,8 +9,8 @@ import { checkSeekerGenesisHolder, type SeekerGenesisResult } from './seekerGene
 
 // Constants
 const HELIUS_RPC_URL = process.env.EXPO_PUBLIC_HELIUS_RPC_URL || 'https://api.mainnet-beta.solana.com'
-const SEEKER_GENESIS_TOKEN_MINT = 'SGTGenesisTokenMintAddress' // Replace with actual SGT mint
-const SKR_TOKEN_MINT = 'SKRTokenMintAddress' // Replace with actual SKR mint
+const SEEKER_GENESIS_TOKEN_MINT = 'SGTGenesisTokenMintAddress' // Legacy, not used in new gate
+const SKR_TOKEN_MINT = 'SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3'
 
 // App identity for MWA
 const APP_IDENTITY = {
@@ -70,14 +70,17 @@ class SolanaService {
         // The authorization contains the selected account and auth token
         const selectedAccount = authorization.accounts[0]
 
+        // Normalize whatever the wallet returns into a clean base58 address string
+        const normalizedAddress = this.normalizeWalletAddress(selectedAccount)
+
         return {
-          publicKey: selectedAccount.address,
+          publicKey: normalizedAddress,
           authToken: authorization.auth_token,
           walletUriBase: authorization.wallet_uri_base,
         }
       })
 
-      // Store the connection state
+      // Store the connection state (ensure it is a valid base58 public key)
       this.publicKey = new PublicKey(result.publicKey)
       this.authToken = result.authToken
 
@@ -90,6 +93,47 @@ class SolanaService {
     } catch (error) {
       console.error('❌ Wallet connection failed:', error)
       throw new Error('Failed to connect wallet via Mobile Wallet Adapter')
+    }
+  }
+
+  /**
+   * Normalize the wallet account object into a base58 address string.
+   * Handles different shapes that Mobile Wallet Adapter–compatible wallets may return.
+   */
+  private normalizeWalletAddress(account: any): string {
+    try {
+      // If the wallet exposes a web3.js PublicKey instance, prefer that
+      if (account?.publicKey instanceof PublicKey) {
+        return account.publicKey.toBase58()
+      }
+
+      // Fall back to a string address
+      const raw =
+        typeof account?.address === 'string'
+          ? account.address
+          : account?.publicKey?.toString?.() ?? String(account?.address ?? '')
+
+      // Strip common URI prefix if present, e.g. "solana:"
+      const withoutPrefix = raw.replace(/^solana:/i, '')
+
+      // If this looks like base64 (e.g. ends with "="), decode and convert to base58
+      if (/^[0-9A-Za-z+/]+={0,2}$/.test(withoutPrefix)) {
+        const bytes = Buffer.from(withoutPrefix, 'base64')
+        const pk = new PublicKey(bytes)
+        return pk.toBase58()
+      }
+
+      // Otherwise, assume it's already a base58 string
+      const firstSegment = withoutPrefix.split(/[?#]/)[0]
+      const match = firstSegment.match(/[1-9A-HJ-NP-Za-km-z]{32,64}/)
+      if (!match) {
+        throw new Error(`Wallet returned invalid public key format: ${raw}`)
+      }
+
+      return match[0]
+    } catch (e) {
+      console.error('Failed to normalize wallet address from account:', account, e)
+      throw new Error('Wallet returned an invalid public key')
     }
   }
 
@@ -137,14 +181,16 @@ class SolanaService {
         owner: walletAddress,
         verified: true,
         metadata: {
-          name: 'Seeker Genesis NFT',
+          name: 'Seeker Access NFT',
           symbol: 'SEEKER',
           uri: `https://seeker-genesis.colmena.dev/api/holders/${walletAddress}`,
         },
       }
     } catch (error) {
+      // If the RPC is rate limited (429) or any other error occurs, log and
+      // gracefully fall back to "not verified" instead of breaking the app.
       console.error('Seeker Genesis verification failed:', error)
-      throw new Error('Failed to verify Seeker Genesis NFT ownership')
+      return null
     }
   }
 
@@ -165,22 +211,20 @@ class SolanaService {
    */
   async fetchSKRState(walletAddress: string): Promise<SKRState> {
     try {
-      const response = await fetch(HELIUS_RPC_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          jsonrpc: '2.0',
-          id: 'skr-balance',
-          method: 'getTokenAccountsByOwner',
-          params: [walletAddress, { mint: SKR_TOKEN_MINT }, { encoding: 'jsonParsed' }],
-        }),
+      const owner = new PublicKey(walletAddress)
+      const mint = new PublicKey(SKR_TOKEN_MINT)
+
+      const tokenAccounts = await this.connection.getParsedTokenAccountsByOwner(owner, {
+        mint,
       })
 
-      const data = await response.json()
+      console.log('🔍 SKR token accounts for wallet:', walletAddress, JSON.stringify(tokenAccounts, null, 2))
 
       let currentBalance = 0
-      if (data.result?.value?.length > 0) {
-        currentBalance = parseFloat(data.result.value[0].account.data.parsed.info.tokenAmount.uiAmount)
+      if (tokenAccounts.value.length > 0) {
+        const amountInfo = tokenAccounts.value[0].account.data.parsed.info.tokenAmount
+        const uiAmount = amountInfo.uiAmount ?? parseFloat(amountInfo.uiAmountString ?? '0')
+        currentBalance = typeof uiAmount === 'number' ? uiAmount : parseFloat(String(uiAmount))
       }
 
       const historicalBalance = await this.getHistoricalBalance(walletAddress)
@@ -204,8 +248,15 @@ class SolanaService {
         status,
       }
     } catch (error) {
-      console.error('❌ SKR state fetch failed:', error)
-      throw new Error('Failed to fetch SKR token state')
+      // On RPC errors (including 429 rate limits), log and return a safe default
+      console.error('❌ SKR state fetch failed, returning default state:', error)
+      return {
+        balance: 0,
+        change24h: 0,
+        changePercentage: 0,
+        lastUpdated: Date.now(),
+        status: 'neutral',
+      }
     }
   }
 
