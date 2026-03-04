@@ -42,7 +42,7 @@ export default function DeviceVerificationScreen() {
           router.replace('/dashboard')
         }, 2000)
       } else {
-        setError('No Seeker Genesis Token found in this wallet')
+        setError('No Solana Mobile Seeker access NFT found in this wallet')
       }
     } catch (err) {
       console.error('Verification failed:', err)
@@ -55,7 +55,17 @@ export default function DeviceVerificationScreen() {
   return (
     <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
-        <TouchableOpacity style={styles.backRow} onPress={() => router.back()} hitSlop={8}>
+        <TouchableOpacity
+          style={styles.backRow}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back()
+            } else {
+              router.replace('/dashboard')
+            }
+          }}
+          hitSlop={8}
+        >
           <Ionicons name="chevron-back" size={24} color="#14F195" />
         </TouchableOpacity>
 
@@ -65,7 +75,7 @@ export default function DeviceVerificationScreen() {
               <>
                 <ActivityIndicator size="large" color="#14F195" />
                 <Text style={styles.statusTitle}>Verifying Device</Text>
-                <Text style={styles.statusText}>Checking for Seeker Genesis Token...</Text>
+                <Text style={styles.statusText}>Checking for Solana Mobile Seeker access NFT...</Text>
               </>
             )}
 
@@ -73,7 +83,7 @@ export default function DeviceVerificationScreen() {
               <>
                 <Ionicons name="checkmark-circle" size={80} color="#14F195" style={styles.statusIcon} />
                 <Text style={styles.statusTitle}>Device Verified!</Text>
-                <Text style={styles.statusText}>Seeker Genesis Token confirmed</Text>
+                <Text style={styles.statusText}>Seeker access NFT confirmed</Text>
                 {publicKey && <Text style={styles.walletAddress}>{publicKey}</Text>}
               </>
             )}

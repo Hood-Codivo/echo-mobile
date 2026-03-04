@@ -23,6 +23,6 @@
         "ITSAppUsesNonExemptEncryption": false
       }
     },
-    "plugins": ["expo-web-browser"]
+    "plugins": ["expo-web-browser", "react-native-nfc-manager"]
   }
 }
