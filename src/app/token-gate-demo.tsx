@@ -4,7 +4,6 @@
  */
 
 import { Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
 import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
@@ -39,11 +38,11 @@ export default function TokenGateDemoScreen() {
   ]
 
   return (
-    <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
+    <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()} hitSlop={8}>
-            <Ionicons name="chevron-back" size={24} color="#14F195" />
+            <Ionicons name="chevron-back" size={24} color="#74C69D" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Token Gate Demo</Text>
           <View style={{ width: 24 }} />
@@ -108,7 +107,7 @@ export default function TokenGateDemoScreen() {
                     {example.address}
                   </Text>
                 </View>
-                <Ionicons name="chevron-forward" size={20} color="#14F195" />
+                <Ionicons name="chevron-forward" size={20} color="#74C69D" />
               </TouchableOpacity>
             ))}
           </View>
@@ -136,13 +135,14 @@ export default function TokenGateDemoScreen() {
           )}
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#0a0a18',
   },
   header: {
     flexDirection: 'row',
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(20, 241, 149, 0.1)',
+    borderBottomColor: 'rgba(116, 198, 157, 0.1)',
   },
   backButton: {
     padding: 4,
@@ -168,12 +168,12 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   infoCard: {
-    backgroundColor: 'rgba(153, 69, 255, 0.1)',
+    backgroundColor: 'rgba(116, 198, 157, 0.1)',
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: 'rgba(153, 69, 255, 0.3)',
+    borderColor: 'rgba(116, 198, 157, 0.3)',
   },
   infoTitle: {
     fontSize: 20,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#14F195',
+    color: '#74C69D',
     marginBottom: 8,
   },
   input: {
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   primaryButton: {
-    backgroundColor: '#14F195',
+    backgroundColor: '#74C69D',
   },
   secondaryButton: {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   exampleLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#14F195',
+    color: '#74C69D',
     marginBottom: 4,
   },
   exampleAddress: {
@@ -271,17 +271,17 @@ const styles = StyleSheet.create({
     fontFamily: 'monospace',
   },
   apiInfoCard: {
-    backgroundColor: 'rgba(20, 241, 149, 0.05)',
+    backgroundColor: 'rgba(116, 198, 157, 0.05)',
     borderRadius: 16,
     padding: 20,
     marginTop: 16,
     borderWidth: 1,
-    borderColor: 'rgba(20, 241, 149, 0.2)',
+    borderColor: 'rgba(116, 198, 157, 0.2)',
   },
   apiInfoTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#14F195',
+    color: '#74C69D',
     marginBottom: 16,
   },
   apiInfoRow: {

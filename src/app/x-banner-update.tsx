@@ -298,7 +298,7 @@ export default function XBannerUpdateScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#0a0a18' }}>
       <ScrollView style={styles.container}>
         <TouchableOpacity style={styles.backRow} onPress={() => router.back()} hitSlop={8}>
-          <Ionicons name="chevron-back" size={24} color="#14F195" />
+          <Ionicons name="chevron-back" size={24} color="#74C69D" />
         </TouchableOpacity>
 
         {/* ── Header ─────────────────────────────────────────────────── */}
@@ -377,7 +377,7 @@ export default function XBannerUpdateScreen() {
               </View>
               {isUploading && (
                 <View style={styles.uploadingOverlay}>
-                  <ActivityIndicator size="large" color="#14F195" />
+                  <ActivityIndicator size="large" color="#74C69D" />
                   <Text style={styles.uploadingText}>{stepLabel}</Text>
                 </View>
               )}
@@ -394,7 +394,7 @@ export default function XBannerUpdateScreen() {
               disabled={isUploading}
               activeOpacity={0.8}
             >
-              <Ionicons name="shuffle" size={24} color={isUploading ? '#666' : '#14F195'} />
+              <Ionicons name="shuffle" size={24} color={isUploading ? '#666' : '#74C69D'} />
               <Text style={[styles.randomizeButtonText, isUploading && styles.randomizeButtonTextDisabled]}>
                 Randomize Banner
               </Text>
@@ -482,8 +482,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   headerText: { flex: 1 },
-  title: { fontSize: 28, fontWeight: '700', color: '#fff', marginBottom: 6 },
-  subtitle: { fontSize: 14, color: '#666', lineHeight: 20 },
+  title: { fontSize: 28, fontFamily: 'ClashDisplay-Bold', color: '#fff', marginBottom: 6 },
+  subtitle: { fontSize: 14, fontFamily: 'ClashDisplay-Regular', color: '#666', lineHeight: 20 },
 
   connectButton: {
     marginTop: 4,
@@ -497,7 +497,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   connectButtonBusy: { opacity: 0.6 },
-  connectButtonText: { color: '#fff', fontSize: 13, fontWeight: '600' },
+  connectButtonText: { color: '#fff', fontSize: 13, fontFamily: 'ClashDisplay-Semibold' },
 
   connectedGroup: { marginTop: 4, alignItems: 'flex-end', gap: 6 },
   connectedPill: {
@@ -509,11 +509,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#0d1f17',
     borderWidth: 1,
-    borderColor: '#14F195',
+    borderColor: '#74C69D',
   },
-  connectedDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#14F195' },
-  connectedPillText: { color: '#14F195', fontSize: 13, fontWeight: '600' },
-  signOutText: { fontSize: 12, color: '#555', textDecorationLine: 'underline' },
+  connectedDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#74C69D' },
+  connectedPillText: { color: '#74C69D', fontSize: 13, fontFamily: 'ClashDisplay-Semibold' },
+  signOutText: { fontSize: 12, fontFamily: 'ClashDisplay-Regular', color: '#555', textDecorationLine: 'underline' },
 
   connectErrorBox: {
     marginHorizontal: 24,
@@ -528,8 +528,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 8,
   },
-  connectErrorText: { flex: 1, fontSize: 12, color: '#ff6666', lineHeight: 17 },
-  retryText: { fontSize: 13, color: '#9945FF', fontWeight: '600' },
+  connectErrorText: { flex: 1, fontSize: 12, fontFamily: 'ClashDisplay-Regular', color: '#ff6666', lineHeight: 17 },
+  retryText: { fontSize: 13, fontFamily: 'ClashDisplay-Semibold', color: '#74C69D' },
 
   previewWrapper: { marginHorizontal: PREVIEW_H_MARGIN, marginBottom: 20 },
   previewImageContainer: {
@@ -580,8 +580,8 @@ const styles = StyleSheet.create({
   },
   previewMainText: {
     fontSize: 16,
-    fontWeight: '800',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#74C69D',
     marginBottom: 6,
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 1, height: 1 },
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
   },
   previewFootnoteText: {
     fontSize: 9,
-    fontWeight: '500',
+    fontFamily: 'ClashDisplay-Medium',
     color: '#ffffff',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 0.5, height: 0.5 },
@@ -599,7 +599,7 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 12,
-    fontWeight: '600',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#555',
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -613,7 +613,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
   },
-  uploadingText: { color: '#14F195', fontSize: 13, fontWeight: '600' },
+  uploadingText: { color: '#74C69D', fontSize: 13, fontFamily: 'ClashDisplay-Semibold' },
 
   randomizeSection: {
     marginHorizontal: 24,
@@ -627,14 +627,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 14,
     borderWidth: 2,
-    borderColor: '#14F195',
+    borderColor: '#74C69D',
     backgroundColor: '#0d1f17',
     gap: 12,
   },
   randomizeButtonText: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#74C69D',
   },
   randomizeButtonTextDisabled: {
     color: '#666',
@@ -647,10 +647,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#0d1f17',
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#14F195',
+    borderColor: '#74C69D',
   },
-  successTitle: { fontSize: 20, fontWeight: '700', color: '#14F195', marginBottom: 6 },
-  successText: { fontSize: 14, color: '#aaa', marginBottom: 16 },
+  successTitle: { fontSize: 20, fontFamily: 'ClashDisplay-Bold', color: '#74C69D', marginBottom: 6 },
+  successText: { fontSize: 14, fontFamily: 'ClashDisplay-Regular', color: '#aaa', marginBottom: 16 },
   successActions: { flexDirection: 'row', gap: 12 },
 
   errorBox: {
@@ -662,8 +662,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ff4444',
   },
-  errorTitle: { fontSize: 16, fontWeight: '700', color: '#ff6666', marginBottom: 6 },
-  errorText: { fontSize: 13, color: '#aaa', marginBottom: 16, lineHeight: 18 },
+  errorTitle: { fontSize: 16, fontFamily: 'ClashDisplay-Bold', color: '#ff6666', marginBottom: 6 },
+  errorText: { fontSize: 13, fontFamily: 'ClashDisplay-Regular', color: '#aaa', marginBottom: 16, lineHeight: 18 },
 
   outlineButton: {
     paddingVertical: 10,
@@ -672,7 +672,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#444',
   },
-  outlineButtonText: { color: '#fff', fontSize: 14, fontWeight: '500' },
+  outlineButtonText: { color: '#fff', fontSize: 14, fontFamily: 'ClashDisplay-Medium' },
 
   buttonRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
   primaryButton: {
@@ -680,12 +680,12 @@ const styles = StyleSheet.create({
     marginBottom: 32,
     paddingVertical: 16,
     borderRadius: 14,
-    backgroundColor: '#14F195',
+    backgroundColor: '#74C69D',
     alignItems: 'center',
     justifyContent: 'center',
   },
   primaryButtonDisabled: { backgroundColor: '#1a2e24', opacity: 0.5 },
-  primaryButtonText: { color: '#000', fontSize: 16, fontWeight: '700' },
+  primaryButtonText: { color: '#000', fontSize: 16, fontFamily: 'ClashDisplay-Semibold' },
 
   offScreen: {
     position: 'absolute',

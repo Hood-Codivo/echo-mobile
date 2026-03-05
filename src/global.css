@@ -1,2 +1,10 @@
 @import 'tailwindcss';
 @import 'uniwind';
+@theme {
+  --font-family-clash: 'ClashDisplay-Regular', system-ui, -apple-system, sans-serif;
+  --font-family-clash-bold: 'ClashDisplay-Bold', system-ui, -apple-system, sans-serif;
+  --font-family-clash-semibold: 'ClashDisplay-Semibold', system-ui, -apple-system, sans-serif;
+  --font-family-clash-medium: 'ClashDisplay-Medium', system-ui, -apple-system, sans-serif;
+  --font-family-clash-light: 'ClashDisplay-Light', system-ui, -apple-system, sans-serif;
+  --font-family-clash-extralight: 'ClashDisplay-Extralight', system-ui, -apple-system, sans-serif;
+}

@@ -3,7 +3,6 @@
  */
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -46,9 +45,9 @@ export default function DashboardScreen() {
       case 'gold':
         return '#FFD700'
       case 'diamond_hands':
-        return '#14F195'
+        return '#74C69D'
       case 'paper_hands':
-        return '#FF4757'
+        return '#F8D7BF'
       default:
         return '#FFFFFF'
     }
@@ -68,7 +67,7 @@ export default function DashboardScreen() {
   }
 
   return (
-    <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
+    <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
           style={styles.scrollView}
@@ -76,8 +75,8 @@ export default function DashboardScreen() {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={handleRefresh}
-              tintColor="#14F195"
-              colors={['#14F195']}
+              tintColor="#74C69D"
+              colors={['#74C69D']}
             />
           }
         >
@@ -114,7 +113,7 @@ export default function DashboardScreen() {
                 </View>
                 <View style={styles.stat}>
                   <Text style={styles.statLabel}>24h Change</Text>
-                  <Text style={[styles.statValue, { color: skrState.changePercentage >= 0 ? '#14F195' : '#FF4757' }]}>
+                  <Text style={[styles.statValue, { color: skrState.changePercentage >= 0 ? '#74C69D' : '#F8D7BF' }]}>
                     {skrState.changePercentage >= 0 ? '+' : ''}
                     {skrState.changePercentage.toFixed(2)}%
                   </Text>
@@ -122,14 +121,9 @@ export default function DashboardScreen() {
               </View>
 
               <View style={styles.statusBadge}>
-                <LinearGradient
-                  colors={[getStatusColor(skrState.status), getStatusColor(skrState.status) + '88']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.statusBadgeGradient}
-                >
+                <View style={[styles.statusBadgeGradient, { backgroundColor: getStatusColor(skrState.status) }]}>
                   <Text style={styles.statusText}>{skrState.status.toUpperCase().replace('_', ' ')}</Text>
-                </LinearGradient>
+                </View>
               </View>
             </View>
           )}
@@ -151,13 +145,13 @@ export default function DashboardScreen() {
               onPress={() => router.push('/x-banner-update')}
               activeOpacity={0.8}
             >
-              <Ionicons name="image-outline" size={20} color="#14F195" />
+              <Ionicons name="image-outline" size={20} color="#74C69D" />
               <Text style={styles.secondaryButtonText}>Update Banner</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.infoBox}>
-            <Ionicons name="information-circle-outline" size={16} color="#FFC107" />
+            <Ionicons name="information-circle-outline" size={16} color="#F8D7BF" />
             <Text style={styles.infoText}>
               Bring two Seeker devices together to start a handshake session automatically via NFC.
             </Text>
@@ -180,7 +174,7 @@ export default function DashboardScreen() {
           {handshaking && (
             <View style={styles.handshakeModalBackdrop}>
               <View style={styles.handshakeModal}>
-                <MaterialCommunityIcons name="handshake-outline" size={40} color="#14F195" />
+                <MaterialCommunityIcons name="handshake-outline" size={40} color="#74C69D" />
                 <Text style={styles.handshakeTitle}>Handshake Detected</Text>
                 {lastTagId && (
                   <Text style={styles.handshakeSubtitle} numberOfLines={1} ellipsizeMode="middle">
@@ -189,26 +183,19 @@ export default function DashboardScreen() {
                 )}
                 <Text style={styles.handshakeText}>You can now record or act on this connection.</Text>
                 <TouchableOpacity style={styles.primaryButton} onPress={resetHandshake} activeOpacity={0.85}>
-                  <LinearGradient
-                    colors={['#9945FF', '#14F195']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.buttonGradient}
-                  >
-                    <Text style={styles.buttonText}>Close</Text>
-                  </LinearGradient>
+                  <Text style={styles.buttonText}>Close</Text>
                 </TouchableOpacity>
               </View>
             </View>
           )}
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: '#0a0a18' },
   scrollView: { flex: 1 },
   header: {
     flexDirection: 'row',
@@ -218,27 +205,29 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: '900',
+    fontFamily: 'ClashDisplay-Bold',
     color: '#FFFFFF',
     letterSpacing: 3,
   },
   subtitle: {
     fontSize: 14,
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#74C69D',
     letterSpacing: 2,
     marginTop: 4,
   },
   walletCard: {
-    backgroundColor: 'rgba(153, 69, 255, 0.1)',
+    backgroundColor: 'rgba(116, 198, 157, 0.1)',
     borderRadius: 16,
     padding: 16,
     marginHorizontal: 24,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(153, 69, 255, 0.3)',
+    borderColor: 'rgba(116, 198, 157, 0.3)',
   },
   cardLabel: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Medium',
     color: '#FFFFFF',
     opacity: 0.6,
     marginBottom: 8,
@@ -247,17 +236,17 @@ const styles = StyleSheet.create({
   },
   walletAddress: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
-    fontFamily: 'monospace',
   },
   skrCard: {
-    backgroundColor: 'rgba(20, 241, 149, 0.05)',
+    backgroundColor: 'rgba(116, 198, 157, 0.05)',
     borderRadius: 16,
     padding: 20,
     marginHorizontal: 24,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: 'rgba(20, 241, 149, 0.2)',
+    borderColor: 'rgba(116, 198, 157, 0.2)',
   },
   skrHeader: {
     flexDirection: 'row',
@@ -267,7 +256,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     letterSpacing: 1,
   },
@@ -280,6 +269,7 @@ const styles = StyleSheet.create({
   stat: { alignItems: 'center' },
   statLabel: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Medium',
     color: '#FFFFFF',
     opacity: 0.6,
     marginBottom: 8,
@@ -287,7 +277,7 @@ const styles = StyleSheet.create({
   },
   statValue: {
     fontSize: 24,
-    fontWeight: '800',
+    fontFamily: 'ClashDisplay-Bold',
     color: '#FFFFFF',
   },
   statusBadge: {
@@ -300,7 +290,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     letterSpacing: 2,
   },
@@ -321,12 +311,13 @@ const styles = StyleSheet.create({
   },
   statsNumber: {
     fontSize: 32,
-    fontWeight: '800',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#74C69D',
     marginBottom: 8,
   },
   statsLabel: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Medium',
     color: '#FFFFFF',
     opacity: 0.6,
     textTransform: 'uppercase',
@@ -340,9 +331,7 @@ const styles = StyleSheet.create({
   primaryButton: {
     borderRadius: 12,
     overflow: 'hidden',
-  },
-  buttonGradient: {
-    flexDirection: 'row',
+    backgroundColor: '#74C69D',
     paddingVertical: 16,
     alignItems: 'center',
     justifyContent: 'center',
@@ -350,13 +339,13 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   secondaryButton: {
-    backgroundColor: 'rgba(20, 241, 149, 0.1)',
+    backgroundColor: 'rgba(116, 198, 157, 0.1)',
     borderRadius: 12,
     paddingVertical: 16,
     flexDirection: 'row',
@@ -364,12 +353,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 12,
     borderWidth: 1,
-    borderColor: 'rgba(20, 241, 149, 0.3)',
+    borderColor: 'rgba(116, 198, 157, 0.3)',
   },
   secondaryButtonText: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#74C69D',
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
@@ -377,18 +366,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,
-    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+    backgroundColor: 'rgba(248, 215, 191, 0.1)',
     borderRadius: 12,
     padding: 16,
     marginHorizontal: 24,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.3)',
+    borderColor: 'rgba(248, 215, 191, 0.3)',
   },
   infoText: {
     flex: 1,
     fontSize: 13,
-    color: '#FFC107',
+    fontFamily: 'ClashDisplay-Regular',
+    color: '#F8D7BF',
     lineHeight: 20,
   },
   handshakeModalBackdrop: {
@@ -408,22 +398,23 @@ const styles = StyleSheet.create({
     padding: 24,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(20, 241, 149, 0.4)',
+    borderColor: 'rgba(116, 198, 157, 0.4)',
     gap: 12,
   },
   handshakeTitle: {
     fontSize: 20,
-    fontWeight: '800',
+    fontFamily: 'ClashDisplay-Bold',
     color: '#FFFFFF',
   },
   handshakeSubtitle: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.7,
-    fontFamily: 'monospace',
   },
   handshakeText: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.8,
     textAlign: 'center',

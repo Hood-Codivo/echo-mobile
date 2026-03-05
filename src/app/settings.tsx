@@ -3,7 +3,6 @@
  */
 
 import { Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React from 'react'
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -20,11 +19,11 @@ const FEATURES = [
 
 export default function SettingsScreen() {
   return (
-    <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
+    <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={8}>
-            <Ionicons name="chevron-back" size={24} color="#14F195" />
+            <Ionicons name="chevron-back" size={24} color="#74C69D" />
           </TouchableOpacity>
           <Text style={styles.title}>Settings</Text>
           <View style={{ width: 24 }} />
@@ -45,7 +44,7 @@ export default function SettingsScreen() {
             <Text style={styles.sectionTitle}>Development Mode</Text>
             <View style={styles.warningBox}>
               <View style={styles.warningHeader}>
-                <Ionicons name="warning-outline" size={18} color="#FFC107" />
+                <Ionicons name="warning-outline" size={18} color="#F8D7BF" />
                 <Text style={styles.warningTitle}>Running in Expo Go with limited features.</Text>
               </View>
               <Text style={styles.warningText}>
@@ -64,7 +63,7 @@ export default function SettingsScreen() {
                   <Ionicons
                     name={enabled ? 'checkmark' : 'close'}
                     size={16}
-                    color={enabled ? '#14F195' : 'rgba(255,255,255,0.35)'}
+                    color={enabled ? '#74C69D' : 'rgba(255,255,255,0.35)'}
                   />
                   <Text style={enabled ? styles.featureItem : styles.featureDisabled}>{label}</Text>
                 </View>
@@ -73,12 +72,12 @@ export default function SettingsScreen() {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: '#0a0a18' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     letterSpacing: 1,
   },
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     marginBottom: 16,
     letterSpacing: 1,
@@ -113,22 +112,23 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#74C69D',
     marginBottom: 8,
   },
   infoText: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.7,
     marginBottom: 4,
   },
   warningBox: {
-    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+    backgroundColor: 'rgba(248, 215, 191, 0.1)',
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.3)',
+    borderColor: 'rgba(248, 215, 191, 0.3)',
   },
   warningHeader: {
     flexDirection: 'row',
@@ -138,13 +138,14 @@ const styles = StyleSheet.create({
   },
   warningTitle: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#FFC107',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#F8D7BF',
     flex: 1,
   },
   warningText: {
     fontSize: 14,
-    color: '#FFC107',
+    fontFamily: 'ClashDisplay-Regular',
+    color: '#F8D7BF',
     lineHeight: 22,
     opacity: 0.85,
   },
@@ -163,11 +164,13 @@ const styles = StyleSheet.create({
   },
   featureItem: {
     fontSize: 14,
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Regular',
+    color: '#74C69D',
     lineHeight: 20,
   },
   featureDisabled: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: 'rgba(255,255,255,0.35)',
     lineHeight: 20,
   },

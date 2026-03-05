@@ -3,7 +3,6 @@
  */
 
 import { Ionicons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -53,7 +52,7 @@ export default function DeviceVerificationScreen() {
   }
 
   return (
-    <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
+    <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <TouchableOpacity
           style={styles.backRow}
@@ -66,14 +65,14 @@ export default function DeviceVerificationScreen() {
           }}
           hitSlop={8}
         >
-          <Ionicons name="chevron-back" size={24} color="#14F195" />
+          <Ionicons name="chevron-back" size={24} color="#74C69D" />
         </TouchableOpacity>
 
         <View style={styles.content}>
           <View style={styles.statusContainer}>
             {verifying && (
               <>
-                <ActivityIndicator size="large" color="#14F195" />
+                <ActivityIndicator size="large" color="#74C69D" />
                 <Text style={styles.statusTitle}>Verifying Device</Text>
                 <Text style={styles.statusText}>Checking for Solana Mobile Seeker access NFT...</Text>
               </>
@@ -81,7 +80,7 @@ export default function DeviceVerificationScreen() {
 
             {!verifying && verified && (
               <>
-                <Ionicons name="checkmark-circle" size={80} color="#14F195" style={styles.statusIcon} />
+                <Ionicons name="checkmark-circle" size={80} color="#74C69D" style={styles.statusIcon} />
                 <Text style={styles.statusTitle}>Device Verified!</Text>
                 <Text style={styles.statusText}>Seeker access NFT confirmed</Text>
                 {publicKey && <Text style={styles.walletAddress}>{publicKey}</Text>}
@@ -90,7 +89,7 @@ export default function DeviceVerificationScreen() {
 
             {!verifying && error && (
               <>
-                <Ionicons name="close-circle" size={80} color="#FF4757" style={styles.statusIcon} />
+                <Ionicons name="close-circle" size={80} color="#F8D7BF" style={styles.statusIcon} />
                 <Text style={styles.statusTitle}>Verification Failed</Text>
                 <Text style={styles.errorText}>{error}</Text>
                 {publicKey && <Text style={styles.walletAddress}>{publicKey}</Text>}
@@ -100,24 +99,17 @@ export default function DeviceVerificationScreen() {
 
           {!verifying && error && (
             <TouchableOpacity style={styles.button} onPress={verifyDevice}>
-              <LinearGradient
-                colors={['#9945FF', '#14F195']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.buttonGradient}
-              >
-                <Text style={styles.buttonText}>Retry Verification</Text>
-              </LinearGradient>
+              <Text style={styles.buttonText}>Retry Verification</Text>
             </TouchableOpacity>
           )}
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: '#0a0a18' },
   backRow: {
     paddingHorizontal: 24,
     paddingTop: 16,
@@ -137,7 +129,7 @@ const styles = StyleSheet.create({
   },
   statusTitle: {
     fontSize: 28,
-    fontWeight: '800',
+    fontFamily: 'ClashDisplay-Bold',
     color: '#FFFFFF',
     marginTop: 20,
     marginBottom: 12,
@@ -145,6 +137,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.7,
     textAlign: 'center',
@@ -152,29 +145,29 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: '#FF4757',
+    fontFamily: 'ClashDisplay-Regular',
+    color: '#F8D7BF',
     textAlign: 'center',
     marginBottom: 20,
     paddingHorizontal: 20,
   },
   walletAddress: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.5,
-    fontFamily: 'monospace',
     textAlign: 'center',
   },
   button: {
     borderRadius: 12,
     overflow: 'hidden',
-  },
-  buttonGradient: {
+    backgroundColor: '#74C69D',
     paddingVertical: 16,
     alignItems: 'center',
   },
   buttonText: {
     fontSize: 16,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     letterSpacing: 1,
     textTransform: 'uppercase',

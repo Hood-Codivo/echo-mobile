@@ -3,13 +3,18 @@
     "scheme": "echo",
     "userInterfaceStyle": "automatic",
     "orientation": "default",
+    "icon": "./src/assets/icon.png",
     "web": {
       "output": "static"
     },
     "name": "Echo: Proof of Seeker",
     "slug": "com.xelabyte.echo-seeker",
     "android": {
-      "package": "com.xelabyte.echo_seeker"
+      "package": "com.xelabyte.echo_seeker",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/icon.png",
+        "backgroundColor": "#0a0015"
+      }
     },
     "extra": {
       "eas": {
@@ -19,6 +24,7 @@
     "owner": "importa-holdings-ltd",
     "ios": {
       "bundleIdentifier": "com.xelabyte.echo-seeker",
+      "icon": "./src/assets/icon.png",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
