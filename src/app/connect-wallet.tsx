@@ -1,5 +1,4 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -61,15 +60,15 @@ export default function ConnectWalletScreen() {
   }
 
   return (
-    <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
+    <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <TouchableOpacity style={styles.backRow} onPress={() => router.back()} hitSlop={8}>
-          <Ionicons name="chevron-back" size={24} color="#14F195" />
+          <Ionicons name="chevron-back" size={24} color="#74C69D" />
         </TouchableOpacity>
 
         <View style={styles.content}>
           <View style={styles.header}>
-            <MaterialCommunityIcons name="wallet-outline" size={60} color="#14F195" style={styles.walletIcon} />
+            <MaterialCommunityIcons name="wallet-outline" size={60} color="#74C69D" style={styles.walletIcon} />
             <Text style={styles.title}>{walletConnected ? 'Token Gate Verification' : 'Connect Your Wallet'}</Text>
             <Text style={styles.description}>
               {walletConnected
@@ -84,7 +83,7 @@ export default function ConnectWalletScreen() {
                 <Text style={styles.requirementsTitle}>Requirements:</Text>
                 {['Solana Seeker device', 'Compatible Solana wallet', 'Seeker Genesis NFT 🔥'].map((req) => (
                   <View key={req} style={styles.requirement}>
-                    <Ionicons name="checkmark" size={18} color="#14F195" />
+                    <Ionicons name="checkmark" size={18} color="#74C69D" />
                     <Text style={styles.requirementText}>{req}</Text>
                   </View>
                 ))}
@@ -96,18 +95,11 @@ export default function ConnectWalletScreen() {
                 disabled={connecting}
                 activeOpacity={0.8}
               >
-                <LinearGradient
-                  colors={['#9945FF', '#14F195']}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.buttonGradient}
-                >
-                  {connecting ? (
-                    <ActivityIndicator color="#FFFFFF" size="small" />
-                  ) : (
-                    <Text style={styles.buttonText}>Connect Wallet</Text>
-                  )}
-                </LinearGradient>
+                {connecting ? (
+                  <ActivityIndicator color="#FFFFFF" size="small" />
+                ) : (
+                  <Text style={styles.buttonText}>Connect Wallet</Text>
+                )}
               </TouchableOpacity>
 
               <View style={styles.infoBox}>
@@ -134,26 +126,19 @@ export default function ConnectWalletScreen() {
 
               {result?.isHolder && (
                 <TouchableOpacity style={styles.button} onPress={handleContinue} activeOpacity={0.8}>
-                  <LinearGradient
-                    colors={['#9945FF', '#14F195']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.buttonGradient}
-                  >
-                    <Text style={styles.buttonText}>Continue</Text>
-                  </LinearGradient>
+                  <Text style={styles.buttonText}>Continue</Text>
                 </TouchableOpacity>
               )}
             </>
           )}
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: '#0a0a18' },
   backRow: {
     paddingHorizontal: 24,
     paddingTop: 16,
@@ -173,13 +158,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: '800',
+    fontFamily: 'ClashDisplay-Bold',
     color: '#FFFFFF',
     marginBottom: 12,
     textAlign: 'center',
   },
   description: {
     fontSize: 16,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.7,
     textAlign: 'center',
@@ -187,17 +173,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   requirements: {
-    backgroundColor: 'rgba(20, 241, 149, 0.05)',
+    backgroundColor: 'rgba(116, 198, 157, 0.05)',
     borderRadius: 16,
     padding: 20,
     marginBottom: 30,
     borderWidth: 1,
-    borderColor: 'rgba(20, 241, 149, 0.2)',
+    borderColor: 'rgba(116, 198, 157, 0.2)',
   },
   requirementsTitle: {
     fontSize: 16,
-    fontWeight: '700',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#74C69D',
     marginBottom: 15,
     textTransform: 'uppercase',
     letterSpacing: 1,
@@ -210,6 +196,7 @@ const styles = StyleSheet.create({
   },
   requirementText: {
     fontSize: 16,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
     opacity: 0.9,
   },
@@ -217,49 +204,49 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 12,
     overflow: 'hidden',
-  },
-  buttonDisabled: { opacity: 0.6 },
-  buttonGradient: {
+    backgroundColor: '#74C69D',
     paddingVertical: 18,
     alignItems: 'center',
   },
+  buttonDisabled: { opacity: 0.6 },
   buttonText: {
     fontSize: 18,
-    fontWeight: '700',
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#FFFFFF',
     letterSpacing: 1,
     textTransform: 'uppercase',
   },
   infoBox: {
-    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+    backgroundColor: 'rgba(248, 215, 191, 0.1)',
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.3)',
+    borderColor: 'rgba(248, 215, 191, 0.3)',
   },
   infoText: {
     fontSize: 13,
-    color: '#FFC107',
+    fontFamily: 'ClashDisplay-Regular',
+    color: '#F8D7BF',
     lineHeight: 20,
     textAlign: 'center',
   },
   walletInfo: {
-    backgroundColor: 'rgba(153, 69, 255, 0.1)',
+    backgroundColor: 'rgba(116, 198, 157, 0.1)',
     borderRadius: 12,
     padding: 16,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: 'rgba(153, 69, 255, 0.3)',
+    borderColor: 'rgba(116, 198, 157, 0.3)',
   },
   walletLabel: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#888',
     marginBottom: 6,
-    fontWeight: '600',
   },
   walletAddress: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
-    fontFamily: 'monospace',
   },
 })

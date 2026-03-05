@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontSize: 48,
-    fontWeight: '800',
-    color: '#14F195',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#74C69D',
     marginBottom: 16,
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 2, height: 2 },
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   footnoteText: {
     fontSize: 20,
-    fontWeight: '500',
+    fontFamily: 'ClashDisplay-Medium',
     color: '#ffffff',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 1, height: 1 },

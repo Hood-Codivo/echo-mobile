@@ -3,7 +3,6 @@
  */
 
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -11,11 +10,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function NFCHandshakeScreen() {
   return (
-    <LinearGradient colors={['#0a0015', '#1a0030', '#0a0015']} style={styles.container}>
+    <View style={styles.container}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} hitSlop={8}>
-            <Ionicons name="chevron-back" size={24} color="#14F195" />
+            <Ionicons name="chevron-back" size={24} color="#74C69D" />
           </TouchableOpacity>
           <Text style={styles.title}>Handshake</Text>
           <View style={{ width: 24 }} />
@@ -31,12 +30,12 @@ export default function NFCHandshakeScreen() {
           </View>
         </View>
       </SafeAreaView>
-    </LinearGradient>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: '#0a0a18' },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -73,15 +72,15 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   infoBox: {
-    backgroundColor: 'rgba(255, 193, 7, 0.1)',
+    backgroundColor: 'rgba(248, 215, 191, 0.1)',
     borderRadius: 12,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 193, 7, 0.3)',
+    borderColor: 'rgba(248, 215, 191, 0.3)',
   },
   infoText: {
     fontSize: 14,
-    color: '#FFC107',
+    color: '#F8D7BF',
     textAlign: 'center',
   },
 })

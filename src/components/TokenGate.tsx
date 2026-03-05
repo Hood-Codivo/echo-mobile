@@ -19,7 +19,7 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
     return (
       <View style={styles.container}>
         <View style={styles.loadingCard}>
-          <ActivityIndicator size="large" color="#14F195" />
+          <ActivityIndicator size="large" color="#74C69D" />
           <Text style={styles.loadingText}>Checking Seeker access NFT...</Text>
         </View>
       </View>
@@ -47,7 +47,7 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
       <View style={styles.container}>
         <View style={[styles.card, styles.holderCard]}>
           <View style={styles.iconContainer}>
-            <MaterialCommunityIcons name="check-decagram" size={56} color="#14F195" />
+            <MaterialCommunityIcons name="check-decagram" size={56} color="#74C69D" />
           </View>
           <Text style={styles.title}>🔥 Seeker Access Holder</Text>
           <Text style={styles.holderSubtitle}>Access Granted</Text>
@@ -77,9 +77,9 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
     <View style={styles.container}>
       <View style={[styles.card, styles.nonHolderCard]}>
         <MaterialCommunityIcons name="lock-outline" size={48} color="#888" />
-          <Text style={styles.title}>Not an Access Holder</Text>
-          <Text style={styles.nonHolderText}>You need the Seeker access NFT to use this feature</Text>
-          <Text style={styles.infoText}>This access NFT is exclusive to eligible Solana Mobile Seeker users</Text>
+        <Text style={styles.title}>Not an Access Holder</Text>
+        <Text style={styles.nonHolderText}>You need the Seeker access NFT to use this feature</Text>
+        <Text style={styles.infoText}>This access NFT is exclusive to eligible Solana Mobile Seeker users</Text>
       </View>
     </View>
   )
@@ -96,15 +96,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   loadingCard: {
-    backgroundColor: 'rgba(20, 241, 149, 0.05)',
-    borderColor: 'rgba(20, 241, 149, 0.2)',
+    backgroundColor: 'rgba(116, 198, 157, 0.05)',
+    borderColor: 'rgba(116, 198, 157, 0.2)',
     borderRadius: 16,
     padding: 24,
     alignItems: 'center',
   },
   holderCard: {
-    backgroundColor: 'rgba(20, 241, 149, 0.1)',
-    borderColor: '#14F195',
+    backgroundColor: 'rgba(116, 198, 157, 0.1)',
+    borderColor: '#74C69D',
   },
   nonHolderCard: {
     backgroundColor: 'rgba(136, 136, 136, 0.05)',
@@ -119,39 +119,42 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'ClashDisplay-Bold',
     color: '#FFFFFF',
     marginBottom: 8,
     textAlign: 'center',
   },
   holderSubtitle: {
     fontSize: 16,
-    color: '#14F195',
-    fontWeight: '600',
+    fontFamily: 'ClashDisplay-Semibold',
+    color: '#74C69D',
     marginBottom: 16,
   },
   loadingText: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#888',
     marginTop: 12,
   },
   nonHolderText: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#CCCCCC',
     textAlign: 'center',
     marginBottom: 12,
   },
   errorText: {
     fontSize: 14,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FF5555',
     textAlign: 'center',
     marginTop: 8,
   },
   infoText: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Light',
     color: '#888',
     textAlign: 'center',
-    fontStyle: 'italic',
   },
   detailsBox: {
     width: '100%',
@@ -168,14 +171,14 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Semibold',
     color: '#888',
-    fontWeight: '600',
     marginRight: 8,
   },
   detailValue: {
     fontSize: 12,
+    fontFamily: 'ClashDisplay-Regular',
     color: '#FFFFFF',
-    fontFamily: 'monospace',
     flex: 1,
     textAlign: 'right',
   },
