@@ -6,6 +6,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import React from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import BrutalistBox from './BrutalistBox'
 import type { SeekerGenesisResult } from '../../services/seekerGenesisService'
 
 interface TokenGateProps {
@@ -18,10 +19,10 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
   if (loading) {
     return (
       <View style={styles.container}>
-        <View style={styles.loadingCard}>
-          <ActivityIndicator size="large" color="#74C69D" />
+        <BrutalistBox offset={6} contentStyle={styles.loadingCardContent}>
+          <ActivityIndicator size="large" color="#0A0A18" />
           <Text style={styles.loadingText}>Checking Seeker access NFT...</Text>
-        </View>
+        </BrutalistBox>
       </View>
     )
   }
@@ -29,11 +30,11 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
   if (error) {
     return (
       <View style={styles.container}>
-        <View style={[styles.card, styles.errorCard]}>
-          <MaterialCommunityIcons name="alert-circle-outline" size={48} color="#FF5555" />
+        <BrutalistBox offset={6} contentStyle={styles.cardContent}>
+          <MaterialCommunityIcons name="alert-circle-outline" size={48} color="#0A0A18" />
           <Text style={styles.title}>Verification Error</Text>
           <Text style={styles.errorText}>{error}</Text>
-        </View>
+        </BrutalistBox>
       </View>
     )
   }
@@ -45,14 +46,14 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
   if (result.isHolder) {
     return (
       <View style={styles.container}>
-        <View style={[styles.card, styles.holderCard]}>
+        <BrutalistBox backgroundColor="#74C69D" offset={6} contentStyle={styles.cardContent}>
           <View style={styles.iconContainer}>
-            <MaterialCommunityIcons name="check-decagram" size={56} color="#74C69D" />
+            <MaterialCommunityIcons name="check-decagram" size={56} color="#0A0A18" />
           </View>
-          <Text style={styles.title}>🔥 Seeker Access Holder</Text>
+          <Text style={styles.title}>Seeker Access Holder</Text>
           <Text style={styles.holderSubtitle}>Access Granted</Text>
 
-          <View style={styles.detailsBox}>
+          <BrutalistBox borderWidth={2} offset={4} contentStyle={styles.detailsBoxContent} style={styles.detailsBoxWrapper}>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Mint:</Text>
               <Text style={styles.detailValue} numberOfLines={1} ellipsizeMode="middle">
@@ -67,20 +68,20 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
               <Text style={styles.detailLabel}>Slot:</Text>
               <Text style={styles.detailValue}>{result.mint.slot}</Text>
             </View>
-          </View>
-        </View>
+          </BrutalistBox>
+        </BrutalistBox>
       </View>
     )
   }
 
   return (
     <View style={styles.container}>
-      <View style={[styles.card, styles.nonHolderCard]}>
-        <MaterialCommunityIcons name="lock-outline" size={48} color="#888" />
+      <BrutalistBox offset={6} contentStyle={styles.cardContent}>
+        <MaterialCommunityIcons name="lock-outline" size={48} color="#0A0A18" />
         <Text style={styles.title}>Not an Access Holder</Text>
         <Text style={styles.nonHolderText}>You need the Seeker access NFT to use this feature</Text>
         <Text style={styles.infoText}>This access NFT is exclusive to eligible Solana Mobile Seeker users</Text>
-      </View>
+      </BrutalistBox>
     </View>
   )
 }
@@ -89,30 +90,13 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
-  card: {
-    borderRadius: 16,
-    padding: 24,
-    alignItems: 'center',
-    borderWidth: 1,
-  },
-  loadingCard: {
-    backgroundColor: 'rgba(116, 198, 157, 0.05)',
-    borderColor: 'rgba(116, 198, 157, 0.2)',
-    borderRadius: 16,
+  cardContent: {
     padding: 24,
     alignItems: 'center',
   },
-  holderCard: {
-    backgroundColor: 'rgba(116, 198, 157, 0.1)',
-    borderColor: '#74C69D',
-  },
-  nonHolderCard: {
-    backgroundColor: 'rgba(136, 136, 136, 0.05)',
-    borderColor: 'rgba(136, 136, 136, 0.3)',
-  },
-  errorCard: {
-    backgroundColor: 'rgba(255, 85, 85, 0.05)',
-    borderColor: 'rgba(255, 85, 85, 0.3)',
+  loadingCardContent: {
+    padding: 24,
+    alignItems: 'center',
   },
   iconContainer: {
     marginBottom: 12,
@@ -120,48 +104,49 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: 'ClashDisplay-Bold',
-    color: '#FFFFFF',
+    color: '#0A0A18',
     marginBottom: 8,
     textAlign: 'center',
   },
   holderSubtitle: {
     fontSize: 16,
-    fontFamily: 'ClashDisplay-Semibold',
-    color: '#74C69D',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#0A0A18',
     marginBottom: 16,
+    textTransform: 'uppercase',
   },
   loadingText: {
     fontSize: 14,
-    fontFamily: 'ClashDisplay-Regular',
-    color: '#888',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#0A0A18',
     marginTop: 12,
   },
   nonHolderText: {
     fontSize: 14,
-    fontFamily: 'ClashDisplay-Regular',
-    color: '#CCCCCC',
+    fontFamily: 'ClashDisplay-Medium',
+    color: '#0A0A18',
     textAlign: 'center',
     marginBottom: 12,
   },
   errorText: {
     fontSize: 14,
-    fontFamily: 'ClashDisplay-Regular',
-    color: '#FF5555',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#0A0A18',
     textAlign: 'center',
     marginTop: 8,
   },
   infoText: {
     fontSize: 12,
-    fontFamily: 'ClashDisplay-Light',
-    color: '#888',
+    fontFamily: 'ClashDisplay-Medium',
+    color: '#666',
     textAlign: 'center',
   },
-  detailsBox: {
+  detailsBoxWrapper: {
     width: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: 12,
-    padding: 16,
     marginTop: 8,
+  },
+  detailsBoxContent: {
+    padding: 16,
   },
   detailRow: {
     flexDirection: 'row',
@@ -171,14 +156,14 @@ const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    fontFamily: 'ClashDisplay-Semibold',
-    color: '#888',
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#0A0A18',
     marginRight: 8,
   },
   detailValue: {
     fontSize: 12,
-    fontFamily: 'ClashDisplay-Regular',
-    color: '#FFFFFF',
+    fontFamily: 'ClashDisplay-Medium',
+    color: '#0A0A18',
     flex: 1,
     textAlign: 'right',
   },

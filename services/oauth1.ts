@@ -50,46 +50,53 @@ export function buildOAuth1Header(
   credentials: OAuth1Credentials,
   bodyParams: Record<string, string> = {},
 ): string {
-  const timestamp = Math.floor(Date.now() / 1000).toString()
-  const nonce = generateNonce()
+  try {
+    const timestamp = Math.floor(Date.now() / 1000).toString()
+    const nonce = generateNonce()
 
-  const oauthParams: Record<string, string> = {
-    oauth_consumer_key: credentials.consumerKey,
-    oauth_nonce: nonce,
-    oauth_signature_method: 'HMAC-SHA1',
-    oauth_timestamp: timestamp,
-    oauth_token: credentials.accessToken,
-    oauth_version: '1.0',
+    const oauthParams: Record<string, string> = {
+      oauth_consumer_key: credentials.consumerKey,
+      oauth_nonce: nonce,
+      oauth_signature_method: 'HMAC-SHA1',
+      oauth_timestamp: timestamp,
+      oauth_token: credentials.accessToken,
+      oauth_version: '1.0',
+    }
+
+    // Merge all params (body + oauth) for the signature base string
+    const allParams: Record<string, string> = { ...bodyParams, ...oauthParams }
+
+    // Sort alphabetically and build the normalized parameter string
+    const normalizedParams = Object.entries(allParams)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([k, v]) => `${percentEncode(k)}=${percentEncode(v)}`)
+      .join('&')
+
+    // Signature base string: METHOD&encoded_url&encoded_params
+    const signatureBase = [method.toUpperCase(), percentEncode(url), percentEncode(normalizedParams)].join('&')
+
+    // Signing key: encoded_consumer_secret&encoded_access_token_secret
+    const signingKey = `${percentEncode(credentials.consumerSecret)}&${percentEncode(credentials.accessTokenSecret)}`
+
+    // HMAC-SHA1
+    const hmac = QuickCrypto.createHmac('sha1', signingKey)
+    hmac.update(signatureBase)
+    const signature = hmac.digest('base64') as string
+
+    oauthParams['oauth_signature'] = signature
+
+    // Build Authorization header value
+    const headerValue =
+      'OAuth ' +
+      Object.entries(oauthParams)
+        .map(([k, v]) => `${percentEncode(k)}="${percentEncode(v)}"`)
+        .join(', ')
+
+    return headerValue
+  } catch (error) {
+    console.error('[oauth1] Failed to build OAuth header:', error)
+    throw new Error(
+      `OAuth signing failed: ${error instanceof Error ? error.message : String(error)}. Ensure react-native-quick-crypto is properly installed.`,
+    )
   }
-
-  // Merge all params (body + oauth) for the signature base string
-  const allParams: Record<string, string> = { ...bodyParams, ...oauthParams }
-
-  // Sort alphabetically and build the normalized parameter string
-  const normalizedParams = Object.entries(allParams)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${percentEncode(k)}=${percentEncode(v)}`)
-    .join('&')
-
-  // Signature base string: METHOD&encoded_url&encoded_params
-  const signatureBase = [method.toUpperCase(), percentEncode(url), percentEncode(normalizedParams)].join('&')
-
-  // Signing key: encoded_consumer_secret&encoded_access_token_secret
-  const signingKey = `${percentEncode(credentials.consumerSecret)}&${percentEncode(credentials.accessTokenSecret)}`
-
-  // HMAC-SHA1
-  const hmac = QuickCrypto.createHmac('sha1', signingKey)
-  hmac.update(signatureBase)
-  const signature = hmac.digest('base64') as string
-
-  oauthParams['oauth_signature'] = signature
-
-  // Build Authorization header value
-  const headerValue =
-    'OAuth ' +
-    Object.entries(oauthParams)
-      .map(([k, v]) => `${percentEncode(k)}="${percentEncode(v)}"`)
-      .join(', ')
-
-  return headerValue
 }

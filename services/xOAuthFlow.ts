@@ -30,15 +30,22 @@ function generateNonce(): string {
 }
 
 function sign(method: string, url: string, params: Record<string, string>, signingKey: string): string {
-  const normalizedParams = Object.entries(params)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${percentEncode(k)}=${percentEncode(v)}`)
-    .join('&')
+  try {
+    const normalizedParams = Object.entries(params)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([k, v]) => `${percentEncode(k)}=${percentEncode(v)}`)
+      .join('&')
 
-  const base = [method.toUpperCase(), percentEncode(url), percentEncode(normalizedParams)].join('&')
-  const hmac = QuickCrypto.createHmac('sha1', signingKey)
-  hmac.update(base)
-  return hmac.digest('base64') as string
+    const base = [method.toUpperCase(), percentEncode(url), percentEncode(normalizedParams)].join('&')
+    const hmac = QuickCrypto.createHmac('sha1', signingKey)
+    hmac.update(base)
+    return hmac.digest('base64') as string
+  } catch (error) {
+    console.error('[xOAuthFlow] Signing failed:', error)
+    throw new Error(
+      `OAuth signing failed: ${error instanceof Error ? error.message : String(error)}. Ensure react-native-quick-crypto is properly installed.`,
+    )
+  }
 }
 
 function buildAuthHeader(oauthParams: Record<string, string>): string {
@@ -78,6 +85,7 @@ export async function getOAuthRequestToken(
   const signingKey = `${percentEncode(consumerSecret)}&`
   params.oauth_signature = sign('POST', url, params, signingKey)
 
+  console.log('[xOAuthFlow] Requesting OAuth token...')
   const response = await fetch(url, {
     method: 'POST',
     headers: { Authorization: buildAuthHeader(params) },
@@ -85,11 +93,16 @@ export async function getOAuthRequestToken(
 
   if (!response.ok) {
     const body = await response.text()
+    console.error('[xOAuthFlow] Request token failed:', response.status, body)
     throw new Error(`Request token failed (${response.status}): ${body}`)
   }
 
   const parsed = Object.fromEntries(new URLSearchParams(await response.text()))
-  if (!parsed.oauth_token) throw new Error('No oauth_token in request_token response')
+  if (!parsed.oauth_token) {
+    console.error('[xOAuthFlow] No oauth_token in response:', parsed)
+    throw new Error('No oauth_token in request_token response')
+  }
+  console.log('[xOAuthFlow] Request token obtained successfully')
 
   return {
     requestToken: parsed.oauth_token,
@@ -138,6 +151,7 @@ export async function getOAuthAccessToken(
     .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
     .join('&')
 
+  console.log('[xOAuthFlow] Exchanging verifier for access token...')
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -149,11 +163,16 @@ export async function getOAuthAccessToken(
 
   if (!response.ok) {
     const body = await response.text()
+    console.error('[xOAuthFlow] Access token failed:', response.status, body)
     throw new Error(`Access token failed (${response.status}): ${body}`)
   }
 
   const parsed = Object.fromEntries(new URLSearchParams(await response.text()))
-  if (!parsed.oauth_token) throw new Error('No oauth_token in access_token response')
+  if (!parsed.oauth_token) {
+    console.error('[xOAuthFlow] No oauth_token in access token response:', parsed)
+    throw new Error('No oauth_token in access_token response')
+  }
+  console.log('[xOAuthFlow] Access token obtained successfully')
 
   return {
     accessToken: parsed.oauth_token,
