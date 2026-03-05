@@ -9,11 +9,13 @@ import React, { useEffect, useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import solanaService from '../../services/solanaService'
+import { useNfcHandshake } from '../hooks/useNfcHandshake'
 
 export default function DashboardScreen() {
   const [refreshing, setRefreshing] = useState(false)
   const [skrState, setSkrState] = useState<any>(null)
   const [publicKey, setPublicKey] = useState<string | null>(null)
+  const { supported, enabled, handshaking, lastTagId, resetHandshake } = useNfcHandshake()
 
   useEffect(() => {
     loadData()
@@ -145,22 +147,6 @@ export default function DashboardScreen() {
 
           <View style={styles.actions}>
             <TouchableOpacity
-              style={styles.primaryButton}
-              onPress={() => router.push('/nfc-handshake')}
-              activeOpacity={0.8}
-            >
-              <LinearGradient
-                colors={['#9945FF', '#14F195']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.buttonGradient}
-              >
-                <MaterialCommunityIcons name="handshake-outline" size={24} color="#FFFFFF" />
-                <Text style={styles.buttonText}>New Handshake</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-
-            <TouchableOpacity
               style={styles.secondaryButton}
               onPress={() => router.push('/x-banner-update')}
               activeOpacity={0.8}
@@ -172,8 +158,49 @@ export default function DashboardScreen() {
 
           <View style={styles.infoBox}>
             <Ionicons name="information-circle-outline" size={16} color="#FFC107" />
-            <Text style={styles.infoText}>Running in demo mode. For full features, build with custom dev client.</Text>
+            <Text style={styles.infoText}>
+              Bring two Seeker devices together to start a handshake session automatically via NFC.
+            </Text>
           </View>
+
+          {supported === false && (
+            <View style={styles.infoBox}>
+              <Ionicons name="alert-circle-outline" size={16} color="#FF5555" />
+              <Text style={styles.infoText}>This device does not support NFC handshakes.</Text>
+            </View>
+          )}
+
+          {supported && !enabled && (
+            <View style={styles.infoBox}>
+              <Ionicons name="alert-circle-outline" size={16} color="#FFAA00" />
+              <Text style={styles.infoText}>Turn on NFC in your system settings to enable handshakes.</Text>
+            </View>
+          )}
+
+          {handshaking && (
+            <View style={styles.handshakeModalBackdrop}>
+              <View style={styles.handshakeModal}>
+                <MaterialCommunityIcons name="handshake-outline" size={40} color="#14F195" />
+                <Text style={styles.handshakeTitle}>Handshake Detected</Text>
+                {lastTagId && (
+                  <Text style={styles.handshakeSubtitle} numberOfLines={1} ellipsizeMode="middle">
+                    Tag: {lastTagId}
+                  </Text>
+                )}
+                <Text style={styles.handshakeText}>You can now record or act on this connection.</Text>
+                <TouchableOpacity style={styles.primaryButton} onPress={resetHandshake} activeOpacity={0.85}>
+                  <LinearGradient
+                    colors={['#9945FF', '#14F195']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.buttonGradient}
+                  >
+                    <Text style={styles.buttonText}>Close</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
     </LinearGradient>
@@ -363,5 +390,43 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: '#FFC107',
     lineHeight: 20,
+  },
+  handshakeModalBackdrop: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  },
+  handshakeModal: {
+    width: '80%',
+    backgroundColor: '#12001f',
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(20, 241, 149, 0.4)',
+    gap: 12,
+  },
+  handshakeTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#FFFFFF',
+  },
+  handshakeSubtitle: {
+    fontSize: 12,
+    color: '#FFFFFF',
+    opacity: 0.7,
+    fontFamily: 'monospace',
+  },
+  handshakeText: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    opacity: 0.8,
+    textAlign: 'center',
+    marginVertical: 4,
   },
 })

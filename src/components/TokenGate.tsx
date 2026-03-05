@@ -1,6 +1,6 @@
 /**
  * Token Gate Component
- * Displays Seeker Genesis NFT holder status with visual feedback
+ * Displays Solana Mobile Seeker holder status with visual feedback
  */
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -20,7 +20,7 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
       <View style={styles.container}>
         <View style={styles.loadingCard}>
           <ActivityIndicator size="large" color="#14F195" />
-          <Text style={styles.loadingText}>Checking Seeker Genesis NFT...</Text>
+          <Text style={styles.loadingText}>Checking Seeker access NFT...</Text>
         </View>
       </View>
     )
@@ -49,7 +49,7 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
           <View style={styles.iconContainer}>
             <MaterialCommunityIcons name="check-decagram" size={56} color="#14F195" />
           </View>
-          <Text style={styles.title}>🔥 Seeker Genesis Holder</Text>
+          <Text style={styles.title}>🔥 Seeker Access Holder</Text>
           <Text style={styles.holderSubtitle}>Access Granted</Text>
 
           <View style={styles.detailsBox}>
@@ -77,9 +77,9 @@ export default function TokenGate({ result, loading, error }: TokenGateProps) {
     <View style={styles.container}>
       <View style={[styles.card, styles.nonHolderCard]}>
         <MaterialCommunityIcons name="lock-outline" size={48} color="#888" />
-        <Text style={styles.title}>Not a Seeker Genesis Holder</Text>
-        <Text style={styles.nonHolderText}>You need a Seeker Genesis NFT to access this feature</Text>
-        <Text style={styles.infoText}>The Seeker Genesis NFT is exclusive to Solana Mobile Seeker device owners</Text>
+          <Text style={styles.title}>Not an Access Holder</Text>
+          <Text style={styles.nonHolderText}>You need the Seeker access NFT to use this feature</Text>
+          <Text style={styles.infoText}>This access NFT is exclusive to eligible Solana Mobile Seeker users</Text>
       </View>
     </View>
   )
