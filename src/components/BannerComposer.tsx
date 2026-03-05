@@ -95,20 +95,15 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 48,
     fontFamily: 'ClashDisplay-Bold',
-    color: '#74C69D',
+    color: '#74C69D', // Green
     marginBottom: 16,
-    textShadowColor: 'rgba(0, 0, 0, 0.8)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 8,
     lineHeight: 56,
   },
   footnoteText: {
     fontSize: 20,
-    fontFamily: 'ClashDisplay-Medium',
-    color: '#ffffff',
-    textShadowColor: 'rgba(0, 0, 0, 0.8)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 4,
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#F8D7BF', // Peach
     lineHeight: 26,
+    textTransform: 'uppercase',
   },
 })

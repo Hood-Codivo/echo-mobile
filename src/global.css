@@ -7,4 +7,21 @@
   --font-family-clash-medium: 'ClashDisplay-Medium', system-ui, -apple-system, sans-serif;
   --font-family-clash-light: 'ClashDisplay-Light', system-ui, -apple-system, sans-serif;
   --font-family-clash-extralight: 'ClashDisplay-Extralight', system-ui, -apple-system, sans-serif;
+
+  --color-green-primary: #74C69D;
+  --color-peach-secondary: #F8D7BF;
+  --color-dark-main: #0A0A18;
+}
+
+@utility shadow-brutalist {
+  shadow-offset: 6px 6px;
+  shadow-opacity: 1;
+  shadow-radius: 0px;
+  elevation: 6;
+  shadow-color: #0A0A18;
+}
+
+@utility border-brutalist {
+  border-width: 2px;
+  border-color: #0A0A18;
 }

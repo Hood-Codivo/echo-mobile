@@ -37,12 +37,12 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <AppProvider>
         <Stack
           screenOptions={{
             headerShown: false,
-            contentStyle: { backgroundColor: '#0a0015' },
+            contentStyle: { backgroundColor: '#F8D7BF' },
             animation: 'slide_from_right',
           }}
         >

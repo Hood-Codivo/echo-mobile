@@ -14,7 +14,7 @@ const SKR_TOKEN_MINT = 'SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3'
 
 // App identity for MWA
 const APP_IDENTITY = {
-  name: 'Echo - Seeker Signal',
+  name: 'Echo: Proof of Seeker',
   uri: 'https://echo.seeker.app',
   icon: 'relative/path/to/icon.png', // Update with your app icon
 }
@@ -111,7 +111,7 @@ class SolanaService {
       const raw =
         typeof account?.address === 'string'
           ? account.address
-          : account?.publicKey?.toString?.() ?? String(account?.address ?? '')
+          : (account?.publicKey?.toString?.() ?? String(account?.address ?? ''))
 
       // Strip common URI prefix if present, e.g. "solana:"
       const withoutPrefix = raw.replace(/^solana:/i, '')

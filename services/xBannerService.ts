@@ -79,16 +79,19 @@ export async function getAuthenticatedUser(
   const url = `${X_API_BASE_URL}/account/verify_credentials.json`
   const authHeader = buildOAuth1Header('GET', url, credentials)
 
+  console.log('[xBannerService] Verifying credentials with X API...')
   const response = await fetch(url, {
     headers: { Authorization: authHeader },
   })
 
   if (!response.ok) {
     const body = await response.text()
+    console.error('[xBannerService] Verification failed:', response.status, body)
     throw new Error(`Connect to X failed (${response.status}): ${body}`)
   }
 
   const data = await response.json()
+  console.log('[xBannerService] User verified:', data.screen_name)
   return {
     username: data.screen_name as string,
     bannerUrl: (data.profile_banner_url as string) || null,
