@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   walletInfo: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FEF5E7',
     padding: 16,
     marginBottom: 20,
     borderWidth: 2,

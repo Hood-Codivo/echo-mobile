@@ -19,7 +19,7 @@ interface BrutalistBoxProps {
  */
 export const BrutalistBox: React.FC<BrutalistBoxProps> = ({
   children,
-  backgroundColor = '#FFFFFF',
+  backgroundColor = '#FEF5E7',
   offset = 6,
   borderWidth = 3,
   borderColor = '#0A0A18',

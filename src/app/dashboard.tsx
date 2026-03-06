@@ -11,6 +11,7 @@ import { SvgXml } from 'react-native-svg'
 import solanaService from '../../services/solanaService'
 import BrutalistBox from '../components/BrutalistBox'
 import { useNfcHandshake } from '../hooks/useNfcHandshake'
+import { useHandshakeStore } from '../store/handshakeStore'
 
 const scrSparkSvg = `<svg width="60" height="60" viewBox="0 0 194 195" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M59.8843 35.9229C61.4674 38.5554 63.3298 41.0397 65.5104 43.1886C66.5968 44.265 67.7414 45.2751 68.9674 46.176C70.1935 47.073 71.4778 47.8764 72.8203 48.5667C73.9532 49.1556 75.1366 49.6236 76.3356 50.037L76.4636 50.0799C77.744 50.5245 78.4269 51.9285 77.9846 53.2155C77.7595 53.8746 77.2784 54.3777 76.6964 54.6507C74.7021 55.5789 72.6884 56.3979 70.76 57.2325C69.08 57.9618 67.4659 58.6833 65.9682 59.5062C64.4666 60.3213 63.097 61.2651 61.8205 62.3454C61.5023 62.6145 61.1842 62.8875 60.8854 63.1839L60.4276 63.6168C60.2801 63.7611 60.1792 63.8976 60.0551 64.0341C59.8145 64.311 59.5623 64.5606 59.3373 64.9077C59.1083 65.2392 58.8639 65.5356 58.6466 65.8944L57.9948 66.963C57.7814 67.3257 57.5874 67.7157 57.3856 68.0901L57.083 68.6556L56.8036 69.2484L56.2449 70.4301C54.8248 73.6515 53.6492 77.0523 52.6637 80.4999C52.1903 82.2276 51.7286 83.9631 51.3678 85.7025C51.0069 87.4341 50.681 89.1852 50.5219 90.8388C50.3667 92.4573 48.935 93.6429 47.3248 93.4869C46.0987 93.366 45.121 92.5041 44.795 91.3809L44.7873 91.3458C44.1781 89.232 43.794 87.2235 43.4176 85.2306L42.3662 79.3377C41.7919 76.1436 41.1789 72.9924 40.3292 70.0518C39.8946 68.5971 39.3863 67.2009 38.7927 65.9958L38.3232 65.1612C38.1369 64.8765 37.9313 64.584 37.7373 64.2954C37.3183 63.726 36.8837 63.1605 36.3948 62.6223C35.4365 61.5381 34.3617 60.5124 33.2093 59.5491C32.0492 58.5975 30.8193 57.7044 29.5389 56.8737C26.9781 55.2162 24.2116 53.8122 21.3792 52.7007C19.7884 52.0767 19.0008 50.271 19.6255 48.672C19.9436 47.8491 20.5722 47.2407 21.3249 46.9287L21.3521 46.917C23.5908 45.9966 25.8257 45.0723 27.9093 43.9842C30.0316 42.939 31.9833 41.7144 33.7797 40.3533L35.095 39.3003L36.3017 38.1498C36.7246 37.7832 37.0661 37.3464 37.4347 36.933C37.7878 36.5079 38.1913 36.1218 38.4939 35.6499L39.4678 34.2966C39.7743 33.8286 40.042 33.3294 40.333 32.8536L40.7637 32.1282C40.8956 31.8747 41.012 31.6134 41.1362 31.3599L41.8773 29.8194C43.146 26.871 44.2557 23.7042 45.2024 20.5062C45.412 19.734 45.637 19.032 45.8776 18.4002C45.9978 18.0843 46.122 17.784 46.25 17.4993C46.285 17.4135 46.3044 17.394 46.3315 17.355C46.3548 17.3199 46.382 17.2848 46.4091 17.2536C46.4634 17.1873 46.5216 17.1249 46.5876 17.0625C46.8437 16.8129 47.1968 16.5555 47.5382 16.1967C47.8835 15.8418 48.2056 15.4011 48.4616 14.937C49.2066 13.5603 49.3075 12.7374 49.7847 13.2717C49.9011 13.4082 50.0408 13.6383 50.196 13.9971C50.3512 14.352 50.518 14.8473 50.6383 15.4791C50.7586 16.107 50.8168 16.8636 50.7896 17.6553C50.7819 17.8503 50.7702 18.0609 50.7586 18.2442C50.747 18.3768 50.7392 18.5133 50.7276 18.6537C50.7043 18.9345 50.6732 19.2231 50.6344 19.5234C50.5413 20.2839 50.4288 21.0561 50.3046 21.84C50.1727 22.6239 49.971 23.4117 49.7886 24.2034C49.451 25.7907 48.8807 27.3663 48.3685 28.8873C48.1008 29.5737 47.8059 30.2523 47.5266 30.9348L47.1036 31.9566L46.607 32.955C46.2656 33.618 45.9552 34.2927 45.5865 34.9401L44.4187 36.8628C42.7619 39.3744 40.756 41.6793 38.4862 43.6371L36.7402 45.0372C36.1465 45.4818 35.5296 45.8796 34.9204 46.3047C34.319 46.7415 33.6866 47.0964 33.058 47.4708C32.4295 47.8413 31.8087 48.2352 31.1646 48.5511L29.2517 49.5573L27.3195 50.4777L26.3534 50.934L25.3834 51.3591L23.4395 52.2132L23.4162 47.3694C26.3767 48.4575 29.2246 49.7796 31.9639 51.3552C33.7448 52.3809 35.5218 53.5236 37.1863 54.8496C38.8509 56.1717 40.399 57.681 41.6639 59.3892C42.0751 59.982 42.5058 60.5475 42.8783 61.1754C43.0684 61.4913 43.2702 61.7682 43.4487 62.1192L43.9802 63.141C44.1742 63.4842 44.279 63.8157 44.4303 64.155C44.5661 64.4904 44.7213 64.8297 44.8377 65.1612C45.055 65.8242 45.3188 66.495 45.4973 67.1502C46.2888 69.7866 46.8243 72.3762 47.317 74.9424C47.802 77.5086 48.2211 80.0553 48.6518 82.5591C49.0863 85.0551 49.5209 87.5472 50.1184 89.7975L44.9852 90.2499C45.218 88.1985 45.6254 86.2953 46.0832 84.3999C46.638 82.1379 47.2782 79.9227 47.9883 77.7192C48.6944 75.5157 49.4665 73.3317 50.3589 71.175C51.2514 69.0183 52.2058 66.8772 53.4319 64.7907C54.0488 63.7494 54.7084 62.7159 55.5038 61.7097C55.6008 61.5849 55.6901 61.4562 55.7987 61.3314L56.1363 60.9609L56.8192 60.2277C57.0481 59.982 57.2692 59.8065 57.4982 59.5959C57.7271 59.3931 57.9444 59.1825 58.181 58.9914C59.4188 57.9267 60.7729 56.979 62.1736 56.1483C63.5742 55.3176 65.0176 54.6195 66.4454 53.9955C69.3089 52.7553 72.0714 51.7413 74.7021 50.4972L75.0086 54.4245C72.4478 53.5977 70.0189 52.4238 67.7763 50.9964C65.5453 49.5495 63.5044 47.853 61.6536 45.9888C59.8145 44.1129 58.1733 42.0615 56.7183 39.8931C55.2672 37.7286 54.0411 35.3847 53.009 33.0213C51.6937 29.9832 50.7819 26.9178 50.1921 23.9421C49.5946 20.9664 49.323 18.0726 49.3191 15.327C49.323 14.2935 49.5442 13.6695 49.8662 13.4979L49.5131 14.3949C49.4278 14.4729 49.2997 14.5431 49.1717 14.5743C49.0436 14.6055 48.9234 14.6055 48.838 14.5977C48.6634 14.5782 48.5974 14.5548 48.5819 14.5782C48.5742 14.5977 48.6207 14.6718 48.8147 14.7459C48.9117 14.781 49.0514 14.8122 49.2143 14.7966C49.3773 14.7849 49.5558 14.7264 49.6877 14.6445L50.1611 13.4394C50.5801 13.4862 51.0729 14.1453 51.4919 15.4206C52.7452 19.2426 54.0411 23.1972 55.5543 26.9607C56.7881 30.0495 58.0763 33.1734 59.7873 35.9268C59.8145 35.919 59.8417 35.9112 59.8766 35.9034L59.8843 35.9229Z" fill="#0A0A18"/></svg>`
 
@@ -24,7 +25,11 @@ export default function DashboardScreen() {
   const [refreshing, setRefreshing] = useState(false)
   const [skrState, setSkrState] = useState<any>(null)
   const [publicKey, setPublicKey] = useState<string | null>(null)
-  const { supported, enabled, handshaking, lastTagId, resetHandshake } = useNfcHandshake()
+  const { supported, enabled, handshaking, lastTagId, lastUsername, tweetPosted, tweetError, resetHandshake } =
+    useNfcHandshake()
+
+  // Get handshake count from store
+  const handshakeCount = useHandshakeStore((state) => state.count)
 
   useEffect(() => {
     loadData()
@@ -59,7 +64,7 @@ export default function DashboardScreen() {
       case 'paper_hands':
         return '#F8D7BF'
       default:
-        return '#FFFFFF'
+        return '#FEF5E7'
     }
   }
 
@@ -165,7 +170,7 @@ export default function DashboardScreen() {
                 style={styles.statsCardWrapper}
                 contentStyle={styles.statsCardContent}
               >
-                <Text style={styles.statsNumber}>0</Text>
+                <Text style={styles.statsNumber}>{handshakeCount}</Text>
                 <Text style={styles.statsLabel}>Handshakes</Text>
               </BrutalistBox>
               <BrutalistBox
@@ -227,13 +232,36 @@ export default function DashboardScreen() {
                 contentStyle={styles.handshakeModalContent}
               >
                 <MaterialCommunityIcons name="handshake-outline" size={40} color="#0A0A18" />
-                <Text style={styles.handshakeTitle}>Handshake Detected</Text>
+                <Text style={styles.handshakeTitle}>Handshake Complete! 🤝</Text>
+
+                {lastUsername && <Text style={styles.handshakeSubtitle}>Connected with: @{lastUsername}</Text>}
+
                 {lastTagId && (
-                  <Text style={styles.handshakeSubtitle} numberOfLines={1} ellipsizeMode="middle">
-                    Tag: {lastTagId}
+                  <Text style={styles.handshakeTagId} numberOfLines={1} ellipsizeMode="middle">
+                    Tag ID: {lastTagId}
                   </Text>
                 )}
-                <Text style={styles.handshakeText}>You can now record or act on this connection.</Text>
+
+                {tweetPosted && (
+                  <View style={styles.tweetStatusContainer}>
+                    <Ionicons name="checkmark-circle" size={20} color="#74C69D" />
+                    <Text style={styles.tweetStatusText}>Tweet posted successfully!</Text>
+                  </View>
+                )}
+
+                {tweetError && (
+                  <View style={styles.tweetStatusContainer}>
+                    <Ionicons name="alert-circle" size={20} color="#FF5555" />
+                    <Text style={[styles.tweetStatusText, { color: '#FF5555' }]}>
+                      {tweetError.includes('credentials') || tweetError.includes('Connect')
+                        ? 'Connect Twitter to auto-tweet'
+                        : 'Failed to post tweet'}
+                    </Text>
+                  </View>
+                )}
+
+                {!tweetPosted && !tweetError && <Text style={styles.handshakeText}>Handshake recorded!</Text>}
+
                 <TouchableOpacity onPress={resetHandshake} activeOpacity={0.85} style={styles.modalButtonWrapper}>
                   <BrutalistBox backgroundColor="#74C69D" offset={4} contentStyle={styles.modalButtonContent}>
                     <Text style={styles.buttonText}>Close</Text>
@@ -470,9 +498,18 @@ const styles = StyleSheet.create({
     color: '#0A0A18',
   },
   handshakeSubtitle: {
-    fontSize: 12,
+    fontSize: 16,
+    fontFamily: 'ClashDisplay-Bold',
+    color: '#0A0A18',
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  handshakeTagId: {
+    fontSize: 11,
     fontFamily: 'ClashDisplay-Regular',
     color: '#0A0A18',
+    opacity: 0.6,
+    marginBottom: 8,
   },
   handshakeText: {
     fontSize: 14,
@@ -480,6 +517,23 @@ const styles = StyleSheet.create({
     color: '#0A0A18',
     textAlign: 'center',
     marginVertical: 4,
+  },
+  tweetStatusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#FEF5E7',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#0A0A18',
+    marginVertical: 8,
+  },
+  tweetStatusText: {
+    fontSize: 13,
+    fontFamily: 'ClashDisplay-Medium',
+    color: '#0A0A18',
   },
   scrArrowTitle: {
     position: 'absolute',
