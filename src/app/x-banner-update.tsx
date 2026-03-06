@@ -78,6 +78,8 @@ export default function XBannerUpdateScreen() {
   const [userBannerUrl, setUserBannerUrl] = useState<string | null>(null)
   const [userCredentials, setUserCredentials] = useState<XAuthCredentials | null>(null)
   const [connectError, setConnectError] = useState<string | null>(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const [refreshError, setRefreshError] = useState<string | null>(null)
 
   // Overlay configuration
   const [overlayConfig, setOverlayConfig] = useState<OverlayConfig>(getDefaultOverlayConfig())
@@ -87,6 +89,7 @@ export default function XBannerUpdateScreen() {
   const [composerBannerUri, setComposerBannerUri] = useState<string | null>(null)
   const [isCapturing, setIsCapturing] = useState(false)
   const [previewBannerUri, setPreviewBannerUri] = useState<string | null>(null)
+  const [bannerDimensions, setBannerDimensions] = useState({ width: 1500, height: 500 })
 
   const { step, stepLabel, error, uploadedUri, generatedUri, uploadBannerWithOverlay, shareBanner, reset } =
     useXBannerUpdate()
@@ -161,9 +164,12 @@ export default function XBannerUpdateScreen() {
   // ── Clear update state every time the screen comes into focus ────────────
   useFocusEffect(
     useCallback(() => {
-      reset()
+      // Don't reset if we're in the middle of uploading
+      if (step !== 'downloading' && step !== 'generating' && step !== 'uploading') {
+        reset()
+      }
       checkOAuthResult()
-    }, [reset]),
+    }, [reset, step]),
   )
 
   // ── Check for OAuth result after redirect ─────────────────────────────────
@@ -552,7 +558,12 @@ export default function XBannerUpdateScreen() {
         {isCapturing && composerBannerUri && (
           <View style={styles.offScreen}>
             <ViewShot ref={composerRef} options={{ format: 'jpg', quality: 0.95 }}>
-              <BannerComposer bannerUri={composerBannerUri} config={overlayConfig} />
+              <BannerComposer
+                bannerUri={composerBannerUri}
+                config={overlayConfig}
+                width={bannerDimensions.width}
+                height={bannerDimensions.height}
+              />
             </ViewShot>
           </View>
         )}
@@ -653,7 +664,7 @@ const styles = StyleSheet.create({
   },
   previewOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    backgroundColor: 'rgba(0, 0, 0, 0.08)',
   },
   previewPhoneImage: {
     position: 'absolute',
