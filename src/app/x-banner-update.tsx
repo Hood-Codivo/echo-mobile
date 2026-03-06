@@ -22,6 +22,7 @@ import {
   Dimensions,
   Image,
   Linking,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -89,7 +90,6 @@ export default function XBannerUpdateScreen() {
   const [composerBannerUri, setComposerBannerUri] = useState<string | null>(null)
   const [isCapturing, setIsCapturing] = useState(false)
   const [previewBannerUri, setPreviewBannerUri] = useState<string | null>(null)
-  const [bannerDimensions, setBannerDimensions] = useState({ width: 1500, height: 500 })
 
   const { step, stepLabel, error, uploadedUri, generatedUri, uploadBannerWithOverlay, shareBanner, reset } =
     useXBannerUpdate()
@@ -258,8 +258,46 @@ export default function XBannerUpdateScreen() {
     setUserBannerUrl(null)
     setUserCredentials(null)
     setConnectError(null)
+    setRefreshError(null)
     setComposerBannerUri(null)
     reset()
+  }
+
+  // ── Refresh user data ─────────────────────────────────────────────────────
+  const handleRefresh = async () => {
+    if (!userCredentials || isRefreshing) return
+
+    setIsRefreshing(true)
+    setRefreshError(null)
+
+    try {
+      console.log('[Refresh] Fetching latest user data...')
+      const user = await getAuthenticatedUser(userCredentials)
+
+      // Update banner URL
+      setUserBannerUrl(user.bannerUrl)
+
+      // Update username if it changed
+      if (user.username !== connectedUsername) {
+        setConnectedUsername(user.username)
+
+        // Update stored credentials with new username
+        const stored: StoredCredentials = {
+          accessToken: userCredentials.accessToken,
+          accessTokenSecret: userCredentials.accessTokenSecret,
+          screenName: user.username,
+        }
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(stored))
+      }
+
+      console.log('[Refresh] Data refreshed successfully')
+    } catch (err) {
+      console.error('[Refresh] Failed to refresh data:', err)
+      const msg = err instanceof Error ? err.message : 'Failed to refresh data'
+      setRefreshError(msg)
+    } finally {
+      setIsRefreshing(false)
+    }
   }
 
   // ── Capture banner composition ────────────────────────────────────────────
@@ -333,7 +371,17 @@ export default function XBannerUpdateScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F8D7BF' }}>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            tintColor="#0A0A18"
+            colors={['#0A0A18']}
+          />
+        }
+      >
         <View style={styles.backRowContainer}>
           <TouchableOpacity style={styles.backRow} onPress={() => router.replace('/dashboard')} hitSlop={8}>
             <Ionicons name="chevron-back" size={24} color="#0A0A18" />
@@ -414,7 +462,24 @@ export default function XBannerUpdateScreen() {
             </BrutalistBox>
           </View>
         )}
-
+        {/* ── Refresh error ─────────────────────────────────────────── */}
+        {refreshError && (
+          <View style={styles.connectErrorContainer}>
+            <SvgXml xml={scrArrowSvg} width="30" height="30" style={styles.scrArrowError} />
+            <BrutalistBox
+              backgroundColor="#0A0A18"
+              borderColor="#FF9944"
+              offset={4}
+              style={styles.connectErrorWrapper}
+              contentStyle={styles.connectErrorContent}
+            >
+              <Text style={styles.connectErrorText}>{refreshError}</Text>
+              <TouchableOpacity onPress={handleRefresh} style={styles.retryWrapper}>
+                <Text style={styles.retryText}>Retry</Text>
+              </TouchableOpacity>
+            </BrutalistBox>
+          </View>
+        )}
         {/* ── Banner preview ───────────────────────────────────────── */}
         {previewBannerUri && (
           <View style={styles.previewWrapper}>
@@ -558,12 +623,7 @@ export default function XBannerUpdateScreen() {
         {isCapturing && composerBannerUri && (
           <View style={styles.offScreen}>
             <ViewShot ref={composerRef} options={{ format: 'jpg', quality: 0.95 }}>
-              <BannerComposer
-                bannerUri={composerBannerUri}
-                config={overlayConfig}
-                width={bannerDimensions.width}
-                height={bannerDimensions.height}
-              />
+              <BannerComposer bannerUri={composerBannerUri} config={overlayConfig} />
             </ViewShot>
           </View>
         )}
