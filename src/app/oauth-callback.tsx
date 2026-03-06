@@ -143,7 +143,7 @@ export default function OAuthCallbackScreen() {
         {status === 'processing' && (
           <View style={styles.stateContainer}>
             <BrutalistBox
-              backgroundColor="#FFFFFF"
+              backgroundColor={'#FEF5E7'}
               offset={8}
               style={{
                 width: '85%',
